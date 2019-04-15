@@ -18,6 +18,23 @@
 
     const nickname = $scope.mynickname;
 
+    $scope.joinPrivate = () => {
+      socket.emit('join-private', {
+        nickname: nickname
+      });
+      console.log('Private room joined!');
+    };
+
+    $scope.groupPm = () => {
+      socket.emit('private-chat', {
+        message: 'Hello everybody!'
+      });
+    };
+
+    socket.on('show-message', (data) => {
+      console.log(data);
+    });
+
     socket.emit('get-users');
 
     socket.on('all-users', (data) => {

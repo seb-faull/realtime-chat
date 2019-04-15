@@ -12,6 +12,16 @@ app.use(express.static(path.join(__dirname, "public")));
 io.on('connection', (socket) => {
 	console.log('New connection established');
 
+  // Join private room
+  socket.on('join-private', (data) => {
+    socket.join('private');
+    console.log(`data.nickname joined private`);
+  });
+
+  socket.on('private-chat', (data) => {
+    socket.broadcast.to('private').emit('show-message', data.message);
+  });
+
   // Show all users when first logged in
   socket.on('get-users', () => {
     socket.emit('all-users', users);
