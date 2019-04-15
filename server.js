@@ -32,6 +32,12 @@ io.on('connection', (socket) => {
     io.emit('all-users', users);
   });
 
+  // Broadcast the message
+  socket.on('send-message', (data) => {
+    // socket.broadcast.emit('message-received', data);
+    io.emit('message-received', data);
+  });
+
 });
 
 server.listen(port, () => {
