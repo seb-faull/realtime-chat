@@ -12,6 +12,11 @@ app.use(express.static(path.join(__dirname, "public")));
 io.on('connection', (socket) => {
 	console.log('New connection established');
 
+  // Show all users when first logged in
+  socket.on('get-users', () => {
+    socket.emit('all-users', users);
+  });
+
   //When new socket joins
   socket.on('join', (data) => {
     console.log(data);  // nickname
@@ -24,8 +29,8 @@ io.on('connection', (socket) => {
       socketid: socket.id
     }
     users.push(userObj);
-    io.emit('all-users', users)
-  })
+    io.emit('all-users', users);
+  });
 
 });
 
