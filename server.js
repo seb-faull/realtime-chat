@@ -38,6 +38,12 @@ io.on('connection', (socket) => {
     io.emit('message-received', data);
   });
 
+  // Send a 'like' to the user of my choice
+  socket.on('send-like', (data) => {
+    console.log(data);
+    socket.broadcast.to(data.like).emit('user-liked', data);
+  });
+
 });
 
 server.listen(port, () => {
