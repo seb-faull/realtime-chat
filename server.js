@@ -5,7 +5,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const port = 8080;
-const users = [];
+let users = [];
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -42,6 +42,13 @@ io.on('connection', (socket) => {
   socket.on('send-like', (data) => {
     console.log(data);
     socket.broadcast.to(data.like).emit('user-liked', data);
+  });
+
+  socket.on('disconnect', () => {
+    users = users.filter((item) => {
+      return item.nickname !== socket.nickname;
+    });
+    io.emit('all-users', users);
   });
 
 });
